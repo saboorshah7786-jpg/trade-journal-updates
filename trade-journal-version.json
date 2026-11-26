@@ -1,9 +1,9 @@
 {
   "app": "Trade Journal Desktop",
-  "downloadUrl": "https://github.com/saboorshah7786-jpg/trade-journal-updates/releases/download/v5.1.4/TradeJournal-Setup-5.1.4.exe",
+  "downloadUrl": "https://github.com/saboorshah7786-jpg/trade-journal-updates/releases/download/v5.1.5/TradeJournal-Setup-5.1.5.exe",
   "downloadUrlFallback": "https://drive.usercontent.google.com/download?id=1sezBFAbMqXJxteigJRSvxp8GGoLg-V3d&export=download",
-  "latestVersion": "5.1.4",
+  "latestVersion": "5.1.5",
   "minimumVersion": "2.0.0",
   "publishedAt": "2026-11-26",
-  "releaseNotes": "v5.1.4 \u2014 In-app update fixed: the updater now installs silently (/S, no wizard pages, no clicks) and the app quits fully before the installer writes, so the old version can no longer stay. After a silent install the NEW app opens by itself \u2014 Sir never has to reopen it by hand. Same Screenshot Reader fix as v5.1.3 (OCR in the main process)."
+  "releaseNotes": "v5.1.5 — Screenshot Reader now understands the MT5 Navigator Accounts list: give it an Accounts screenshot and, with \"Fill an account\" chosen, it fills the account (number, name, firm) instead of erroring \"could not read any trade\" — the logged-in account is pre-selected, or pick another from the list. The \"Trade Position and Back Testing Tool\" chart title is no longer mistaken for a trade row. Same silent /S in-app update as v5.1.4 and same main-process OCR as v5.1.3."
 }
