@@ -1,10 +1,10 @@
 {
   "app": "Trade Journal Desktop",
-  "downloadUrl": "https://github.com/saboorshah7786-jpg/trade-journal-updates/releases/download/v5.1.10/TradeJournal-Setup-5.1.10.exe",
+  "downloadUrl": "https://github.com/saboorshah7786-jpg/trade-journal-updates/releases/download/v5.1.11/TradeJournal-Setup-5.1.11.exe",
   "downloadUrlFallback": "https://drive.usercontent.google.com/download?id=1sezBFAbMqXJxteigJRSvxp8GGoLg-V3d&export=download",
-  "latestVersion": "5.1.10",
+  "latestVersion": "5.1.11",
   "minimumVersion": "2.0.0",
   "publishedAt": "2026-11-26",
-  "sha256": "4d5da657ba9528336677e4d91043f8bbc22ce444acd802d31aad4e1c7c88217c",
-  "releaseNotes": "v5.1.10 \u2014 Point 1, Quick Add pips-first: SL pips and TP pips boxes sit next to the SL/TP prices ($1 = 10 pips). Type prices and the pips fill themselves; type pips and the price is set from the entry (buy or sell). SL/TP pips are saved on the trade and shown in the Trades table and CSV export. Quick Add is now minimal \u2014 almost no text inside it; the full explanation (with a worked example) lives in the How to Use tab. Smooth focus glow and pop animations, all themes. Everything from v5.1.9 unchanged, including the permanent updater helper."
+  "sha256": "15c48f63398b62ebedad38b9494b946f2bba3a7df15c09b6865ff70990d0b232",
+  "releaseNotes": "v5.1.11 - Silent-helper fix: the v5.1.9 updater helper went completely silent on Sir's PC twice (app handed over, helper never wrote a line). Fixed: the app now launches updater.bat, which writes its own lines to the update log before and after PowerShell, so a dead PowerShell can no longer fail silently; the update details travel in one update-pending.json file instead of a long command line; updater.ps1 is now pure ASCII (Windows PowerShell 5.1 mis-reads BOM-less UTF-8); the spawn has a real error listener; and the Updates page warns on the next launch if a helper was handed an update but never reported in. The helper still waits for the app to fully close, re-checks the SHA-256, installs silently, verifies the installed version, and relaunches. Everything from v5.1.10 unchanged."
 }
