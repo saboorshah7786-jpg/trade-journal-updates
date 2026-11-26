@@ -1,1 +1,9 @@
-{"app": "Trade Journal Desktop", "downloadUrl": "https://github.com/saboorshah7786-jpg/trade-journal-updates/releases/download/v5.1.6/TradeJournal-Setup-5.1.6.exe", "downloadUrlFallback": "https://drive.usercontent.google.com/download?id=1sezBFAbMqXJxteigJRSvxp8GGoLg-V3d&export=download", "latestVersion": "5.1.6", "minimumVersion": "2.0.0", "publishedAt": "2026-11-26", "releaseNotes": "v5.1.6 — Screenshot Reader saved into undefined fixed; Ken mascot added; button + animation polish; new How to Use tab; Reader page minimal. Same silent /S in-app update as v5.1.4 and same main-process OCR as v5.1.3."}
+{
+  "app": "Trade Journal Desktop",
+  "downloadUrl": "https://github.com/saboorshah7786-jpg/trade-journal-updates/releases/download/v5.1.7/TradeJournal-Setup-5.1.7.exe",
+  "downloadUrlFallback": "https://drive.usercontent.google.com/download?id=1sezBFAbMqXJxteigJRSvxp8GGoLg-V3d&export=download",
+  "latestVersion": "5.1.7",
+  "minimumVersion": "2.0.0",
+  "publishedAt": "2026-11-26",
+  "releaseNotes": "v5.1.7 — Screenshot Reader destination picker redesigned: the three plain radio buttons are now three beautiful selectable cards (Save as trades / Fill an account / Both), each with its own icon, gold border + glow and an animated checkmark that pops in when selected, smooth 150–250 ms animations, all 12 themes. Same three choices and same behaviour — only the look changed. Same silent /S in-app update as v5.1.4 and same main-process OCR as v5.1.3."
+}
