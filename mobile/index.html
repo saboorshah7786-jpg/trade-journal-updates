@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Trade Journal Mobile — Jadu Tona XAUUSD journal. Quick Add, Trades, Dashboard, Missed. Your data stays on your phone. No account, no server.">
+<title>Trade Journal — Mobile v5.2.1</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<style>
+:root{--bg:#0b1220;--card:#111c33;--card2:#0e1830;--line:#22304f;--text:#eef2f8;--muted:#93a3bd;--gold:#d4af37;--gold-soft:#f2d67c;--green:#2fbf71;--red:#e5484d;--blue:#4c8dff;--radius:14px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.45;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+a{color:var(--gold-soft)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+header{position:sticky;top:0;z-index:20;background:rgba(11,18,32,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-top)) }
+.head-row{display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#d4af37,#8a6d1d);display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:15px;flex:0 0 auto}
+.head-titles{flex:1;min-width:0}
+.head-titles h1{font-size:18px;margin:0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.head-titles .sub{font-size:12px;color:var(--muted)}
+.price-chip{text-align:right;flex:0 0 auto}
+.price-chip .p{font-size:17px;font-weight:800;color:var(--gold-soft)}
+.price-chip .s{font-size:11px;color:var(--muted)}
+.price-chip button{background:none;border:1px solid var(--line);border-radius:999px;color:var(--gold-soft);font-size:12px;padding:4px 10px;margin-top:2px;min-height:28px}
+.acct-row{display:flex;gap:8px;margin-top:10px}
+.acct-row select{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;min-height:44px}
+.acct-row button{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:0 14px;min-height:44px;color:var(--gold-soft)}
+main{padding:14px 14px 8px;max-width:640px;margin:0 auto}
+.page{display:none}.page.active{display:block}
+h2{font-size:20px;margin:4px 0 12px}
+h3{font-size:15px;margin:18px 0 8px;color:var(--gold-soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+.card.tight{padding:10px 12px}
+.muted{color:var(--muted);font-size:13px}
+.small{font-size:13px}
+.big{font-size:26px;font-weight:800;line-height:1.1}
+.gold{color:var(--gold-soft)} .green{color:var(--green)} .red{color:var(--red)} .blue{color:var(--blue)}
+label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px}
+label:first-child{margin-top:0}
+input[type=text],input[type=date],input[type=time],input[type=number],select,textarea{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px;min-height:48px}
+textarea{min-height:84px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:64px;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px 6px;min-height:48px;font-weight:700}
+.seg button.on{background:var(--gold);color:#111;border-color:var(--gold)}
+.btn{display:block;width:100%;background:var(--gold);color:#111;border:none;border-radius:12px;padding:15px;font-size:17px;font-weight:800;min-height:52px;margin-top:14px}
+.btn.ghost{background:var(--card);color:var(--text);border:1px solid var(--line);font-weight:700}
+.btn.danger{background:transparent;color:var(--red);border:1px solid var(--red)}
+.btn.small{width:auto;display:inline-block;padding:10px 16px;min-height:44px;font-size:15px;margin-top:0}
+.live-box{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;margin-top:12px}
+.live-box .v{font-size:26px;font-weight:800;color:var(--gold-soft)}
+.live-box .r{display:flex;gap:8px;margin-top:10px}
+.live-box .r button{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 4px;min-height:46px;font-size:14px;font-weight:700;color:var(--text)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.kpi .k{font-size:12px;color:var(--muted)}
+.kpi .v{font-size:22px;font-weight:800;margin-top:2px}
+.hero{border:1px solid var(--gold);background:linear-gradient(180deg,#1a2438,#111c33)}
+.hero .row{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)}
+.hero .row:last-child{border-bottom:none}
+.hero .row .k{color:var(--muted);font-size:13px}
+.hero .row .v{font-weight:700;text-align:right}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.chips button{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 14px;min-height:38px;font-size:14px}
+.chips button.on{background:var(--gold);color:#111;border-color:var(--gold);font-weight:700}
+.trade{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.trade .t1{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.trade .t1 .nm{font-weight:800;font-size:16px}
+.trade .t2{color:var(--muted);font-size:13px;margin-top:2px}
+.trade .t3{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.badge{display:inline-block;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800}
+.badge.buy{background:#12351f;color:#4ade80}.badge.sell{background:#3a1520;color:#ff8a8a}
+.badge.played{background:#12351f;color:#4ade80}.badge.failed{background:#3a1520;color:#ff8a8a}
+.badge.open{background:#2a2305;color:var(--gold-soft)}
+.badge.level{background:#1b2a4a;color:#9db8e8}
+.trade .detail{display:none;margin-top:10px;border-top:1px solid var(--line);padding-top:10px;font-size:14px}
+.trade.open .detail{display:block}
+.trade .detail .row{display:flex;justify-content:space-between;padding:4px 0}
+.trade .detail .row .k{color:var(--muted)}
+.trade .actions{display:flex;gap:8px;margin-top:10px}
+.trade .actions button{flex:1;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px;min-height:44px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:8px 4px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--muted);font-size:12px}
+td.num,th.num{text-align:right}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(11,18,32,.98);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));display:flex}
+nav button{flex:1;background:none;border:none;color:var(--muted);font-size:11px;padding:6px 2px;min-height:52px;border-radius:10px}
+nav button .ic{display:block;font-size:20px;line-height:1.2}
+nav button.on{color:var(--gold-soft);font-weight:800}
+.toast{position:fixed;left:14px;right:14px;bottom:calc(84px + env(safe-area-inset-bottom));background:#1d2c4a;border:1px solid var(--gold);color:var(--text);border-radius:12px;padding:13px 14px;z-index:50;display:none;font-size:15px}
+.note-box{background:#1a2438;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;margin-bottom:12px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <div class="head-row">
+    <div class="logo">XAU</div>
+    <div class="head-titles"><h1>Trade Journal</h1><div class="sub">Jadu Tona &bull; XAUUSD &bull; Mobile v5.2.0</div></div>
+    <div class="price-chip"><div class="p" id="livePrice">—</div><div class="s" id="livePriceSrc">Live gold price</div><button id="refreshPrice" type="button">Refresh</button></div>
+  </div>
+  <div class="acct-row">
+    <select id="accountSelect" aria-label="Account"></select>
+    <button id="addAccountBtn" type="button">+ Account</button>
+  </div>
+</header>
+<main>
+  <section class="page active" id="page-add">
+    <h2>Quick Add</h2>
+    <div class="note-box">Log a trade in 30 seconds. Pips and R are worked out for you — $1 move = 10 pips, $1 per pip per 1.0 lot. Saved only on this phone.</div>
+    <form id="addForm" class="card" autocomplete="off">
+      <label>Direction</label>
+      <div class="seg" id="dirSeg"><button type="button" data-v="BUY" class="on">BUY</button><button type="button" data-v="SELL">SELL</button></div>
+      <div class="grid2">
+        <div><label>Date</label><input type="date" id="f_date" required></div>
+        <div><label>Time (PKT)</label><input type="time" id="f_time" value="12:00"></div>
+      </div>
+      <div class="grid2">
+        <div><label>Level</label><select id="f_level"><option>QML</option><option>TJL-1</option><option>TJL-2</option><option>SBR</option><option>DT</option><option>DB</option><option>ISS L3</option><option>ISS L4</option><option>Other</option></select></div>
+        <div><label>Timeframe</label><select id="f_tf"><option>15m</option><option>1H</option><option>5m</option><option>4H</option></select></div>
+      </div>
+      <div><label>Session</label><select id="f_session"><option>Asia</option><option>London</option><option>New York</option><option>Other</option></select></div>
+      <div class="live-box">
+        <div class="muted">Live gold price</div>
+        <div class="v" id="liveBoxPrice">—</div>
+        <div class="r">
+          <button type="button" id="useLive">Use live price</button>
+          <button type="button" id="round100">Round to 100</button>
+          <button type="button" id="refreshLive2">Refresh</button>
+        </div>
+      </div>
+      <div class="grid3">
+        <div><label>Entry</label><input type="number" id="f_entry" step="0.01" inputmode="decimal" placeholder="4120" required></div>
+        <div><label>Stop loss</label><input type="number" id="f_sl" step="0.01" inputmode="decimal" placeholder="4100"></div>
+        <div><label>Take profit</label><input type="number" id="f_tp" step="0.01" inputmode="decimal" placeholder="4180"></div>
+      </div>
+      <div class="grid3">
+        <div><label>Exit</label><input type="number" id="f_exit" step="0.01" inputmode="decimal" placeholder="Leave empty if open"></div>
+        <div><label>Lot size</label><input type="number" id="f_lot" step="0.01" inputmode="decimal" value="0.10"></div>
+        <div><label>Result</label><select id="f_result"><option value="">Open</option><option>PLAYED</option><option>FAILED</option></select></div>
+      </div>
+      <div class="live-box" style="text-align:left">
+        <div class="row" style="display:flex;justify-content:space-between"><span class="muted">Risk</span><b id="pvRisk">—</b></div>
+        <div class="row" style="display:flex;justify-content:space-between;margin-top:6px"><span class="muted">Planned R:R</span><b id="pvRR">—</b></div>
+        <div class="row" style="display:flex;justify-content:space-between;margin-top:6px"><span class="muted">If exited now</span><b id="pvNow">—</b></div>
+      </div>
+      <label>Notes</label>
+      <textarea id="f_notes" placeholder="What happened, what you did right, what to fix..."></textarea>
+      <button type="button" class="btn ghost" id="voiceBtn">🎙 Speak note (phone dictation)</button>
+      <button type="submit" class="btn">Save trade</button>
+      <button type="button" class="btn ghost hidden" id="cancelEdit">Cancel edit</button>
+    </form>
+  </section>
+
+  <section class="page" id="page-trades">
+    <h2>Trades</h2>
+    <div class="chips" id="tradeFilters">
+      <button data-f="all" class="on">All</button><button data-f="PLAYED">Played</button><button data-f="FAILED">Failed</button><button data-f="open">Open</button>
+    </div>
+    <input type="text" id="tradeSearch" placeholder="Search level, date, notes..." style="margin-bottom:12px">
+    <div id="tradeList"></div>
+  </section>
+
+  <section class="page" id="page-dash">
+    <h2>Dashboard</h2>
+    <div class="card hero" id="gftHero"></div>
+    <div class="kpis" id="kpiGrid"></div>
+    <h3>By session</h3><div class="card tight" id="sliceSession"></div>
+    <h3>By timeframe</h3><div class="card tight" id="sliceTf"></div>
+    <h3>By level</h3><div class="card tight" id="sliceLevel"></div>
+    <h3>Recent days (P&amp;L)</h3><div class="card tight" id="sliceDays"></div>
+  </section>
+
+  <section class="page" id="page-missed">
+    <h2>Missed &amp; Failed</h2>
+    <div class="note-box">Trades you SAW but did NOT take. They never count in your P&amp;L, win rate or dashboard — this is the record of what you left on the table.</div>
+    <div class="card" id="missedStats"></div>
+    <form id="missedForm" class="card" autocomplete="off">
+      <h3 style="margin-top:0">Add a missed trade</h3>
+      <div class="grid2">
+        <div><label>Date</label><input type="date" id="m_date" required></div>
+        <div><label>Direction</label><select id="m_dir"><option>BUY</option><option>SELL</option></select></div>
+      </div>
+      <div class="grid2">
+        <div><label>Level</label><select id="m_level"><option>QML</option><option>TJL-1</option><option>TJL-2</option><option>SBR</option><option>DT</option><option>DB</option><option>ISS L3</option><option>ISS L4</option><option>Other</option></select></div>
+        <div><label>Timeframe</label><select id="m_tf"><option>15m</option><option>1H</option><option>5m</option><option>4H</option></select></div>
+      </div>
+      <div class="grid3">
+        <div><label>Entry</label><input type="number" id="m_entry" step="0.01" inputmode="decimal" required></div>
+        <div><label>Stop loss</label><input type="number" id="m_sl" step="0.01" inputmode="decimal"></div>
+        <div><label>Take profit</label><input type="number" id="m_tp" step="0.01" inputmode="decimal"></div>
+      </div>
+      <div class="grid2">
+        <div><label>Why missed</label><select id="m_reason"><option>Late</option><option>No confirmation</option><option>Fear</option><option>Away</option><option>Spread</option><option>Other</option></select></div>
+        <div><label>What it did after</label><select id="m_outcome"><option value="">Not sure yet</option><option value="played">Would have played</option><option value="failed">Would have failed</option></select></div>
+      </div>
+      <label>Notes</label><textarea id="m_notes" placeholder="Why did you not take it?"></textarea>
+      <button type="submit" class="btn">Save missed trade</button>
+    </form>
+    <div id="missedList"></div>
+  </section>
+
+  <section class="page" id="page-more">
+    <h2>More</h2>
+    <div class="card">
+      <h3 style="margin-top:0">Import &amp; export</h3>
+      <p class="muted">CSV import reads MT5-style history files (buy/sell, open, SL, TP, close, profit). Every row is shown before anything is saved — nothing is guessed.</p>
+      <label>Import CSV file</label>
+      <input type="file" id="csvFile" accept=".csv,.txt" style="padding:10px">
+      <div id="csvPreview" style="margin-top:10px"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn small" type="button" id="exportCsv">Export CSV</button>
+        <button class="btn small ghost" type="button" id="exportJson">Backup (JSON)</button>
+        <button class="btn small ghost" type="button" id="importJsonBtn">Restore backup</button>
+        <input type="file" id="jsonFile" accept=".json" class="hidden">
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Your data</h3>
+      <p class="muted" id="dataInfo"></p>
+      <button class="btn danger" type="button" id="wipeBtn">Delete ALL data on this phone</button>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">About this version</h3>
+      <p class="small">Trade Journal Mobile v5.2.0 — the phone companion to Trade Journal Desktop v5.2.0 (Windows &amp; Mac).</p>
+      <p class="small">Same rules as desktop: Jadu Tona only, XAUUSD, $1 = 10 pips, $1 per pip per 1.0 lot. Goat Funded Trader $5K Two-Step GOAT rules on the Dashboard.</p>
+      <p class="small"><b>What mobile does not do (yet):</b> no screenshot OCR, no offline Whisper voice, no MT5/Excel/PDF/Word import, no live sync with your PC. Your phone journal and your PC journal are separate copies — export CSV from one and import it into the other to move trades across.</p>
+      <p class="small">Your data never leaves this phone. There is no account and no server.</p>
+    </div>
+  </section>
+</main>
+<nav id="bottomNav">
+  <button data-page="add" class="on"><span class="ic">＋</span>Add</button>
+  <button data-page="trades"><span class="ic">▤</span>Trades</button>
+  <button data-page="dash"><span class="ic">◔</span>Dashboard</button>
+  <button data-page="missed"><span class="ic">◷</span>Missed</button>
+  <button data-page="more"><span class="ic">•••</span>More</button>
+</nav>
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+/* Trade Journal Mobile v5.2.0 — all data in localStorage on this phone.
+   Same trade maths as desktop v5.2.0 (app.js calcTrade/stats):
+   pips = (exit-entry) x 10 x direction; P&L $ = pips x lot ($1/pip/lot). */
+var LS_KEY = 'tjMobileV1';
+var LEVELS = ['QML','TJL-1','TJL-2','SBR','DT','DB','ISS L3','ISS L4','Other'];
+var GFT = { balance: 5000, phase1Pct: 0.08, phase2Pct: 0.06, dailyDdPct: 0.04, maxLossPct: 0.10, profitSplit: 0.80 };
+var store = load() || seed();
+var editingId = null, tradeFilter = 'all', livePrice = null;
+
+function seed() {
+  return { accounts: [{ id: 'gft5k', name: 'GFT $5K GOAT', balance: 5000, firm: 'Goat Funded Trader' }],
+    activeAccount: 'gft5k', trades: [], missed: [] };
+}
+function load() { try { var s = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); if (s && Array.isArray(s.trades) && Array.isArray(s.accounts)) return s; } catch (e) {} return null; }
+function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch (e) { toast('Could not save on this phone — storage may be full.'); } }
+function uid() { return 't' + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36); }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function $(id) { return document.getElementById(id); }
+function num(v) { var n = parseFloat(v); return isFinite(n) ? n : null; }
+function fmt(n, d) { if (n == null || !isFinite(n)) return '—'; return (d == null ? 2 : d) === 0 ? String(Math.round(n)) : n.toFixed(d == null ? 2 : d); }
+function money(n) { if (n == null || !isFinite(n)) return '—'; return (n < 0 ? '-$' : '$') + Math.abs(n).toFixed(2); }
+function toast(msg) { var t = $('toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(t._h); t._h = setTimeout(function () { t.style.display = 'none'; }, 3500); }
+function dirOf(t) { return String(t.dir || 'BUY').toUpperCase() === 'SELL' ? -1 : 1; }
+function calcTrade(t) {
+  var entry = num(t.entry), sl = num(t.sl), tp = num(t.tp), exit = num(t.exit), d = dirOf(t);
+  var riskPips = 0, pips = null, r = null, plannedRR = null;
+  if (entry != null && sl != null) riskPips = Math.abs(entry - sl) * 10;
+  if (entry != null && exit != null) { pips = (exit - entry) * 10 * d; if (riskPips > 0) r = pips / riskPips; }
+  if (entry != null && tp != null && riskPips > 0) plannedRR = Math.abs(tp - entry) * 10 / riskPips;
+  var pnl = (t.pnl !== '' && t.pnl != null && isFinite(parseFloat(t.pnl))) ? parseFloat(t.pnl) : null;
+  if (pnl == null && pips != null) pnl = pips * (parseFloat(t.lot) || 0);
+  return { pips: pips == null ? null : Math.round(pips * 10) / 10, riskPips: Math.round(riskPips * 10) / 10,
+    r: r == null ? null : Math.round(r * 100) / 100, plannedRR: plannedRR == null ? null : Math.round(plannedRR * 100) / 100,
+    pnl: pnl == null ? null : Math.round(pnl * 100) / 100 };
+}
+function stats(trades) {
+  var withPnl = trades.filter(function (t) { return calcTrade(t).pnl != null; });
+  var netPnl = withPnl.reduce(function (s, t) { return s + calcTrade(t).pnl; }, 0);
+  var rs = withPnl.map(function (t) { return calcTrade(t).r; }).filter(function (r) { return r != null; });
+  var netR = rs.reduce(function (s, r) { return s + r; }, 0);
+  var wins = withPnl.filter(function (t) { return calcTrade(t).pnl > 0; }).length;
+  var winRate = withPnl.length ? wins / withPnl.length * 100 : 0;
+  var grossWin = withPnl.filter(function (t) { return calcTrade(t).pnl > 0; }).reduce(function (s, t) { return s + calcTrade(t).pnl; }, 0);
+  var grossLoss = Math.abs(withPnl.filter(function (t) { return calcTrade(t).pnl < 0; }).reduce(function (s, t) { return s + calcTrade(t).pnl; }, 0));
+  var pf = grossLoss > 0 ? grossWin / grossLoss : (grossWin > 0 ? 0 : 0);
+  var peak = 0, run = 0, maxDD = 0;
+  withPnl.forEach(function (t) { run += calcTrade(t).pnl; if (run > peak) peak = run; if (peak - run > maxDD) maxDD = peak - run; });
+  return { count: trades.length, netPnl: Math.round(netPnl * 100) / 100, netR: Math.round(netR * 100) / 100,
+    winRate: Math.round(winRate * 10) / 10, profitFactor: Math.round(pf * 100) / 100,
+    expectancy: withPnl.length ? Math.round(netPnl / withPnl.length * 100) / 100 : 0, maxDrawdown: Math.round(maxDD * 100) / 100,
+    played: trades.filter(function (t) { return t.result === 'PLAYED'; }).length,
+    failed: trades.filter(function (t) { return t.result === 'FAILED'; }).length };
+}
+function sliceBy(trades, key) {
+  var m = {};
+  trades.forEach(function (t) { var k = t[key] || '—'; if (!m[k]) m[k] = { n: 0, pnl: 0, wins: 0 };
+    m[k].n++; var c = calcTrade(t); if (c.pnl != null) { m[k].pnl += c.pnl; if (c.pnl > 0) m[k].wins++; } });
+  return Object.keys(m).sort().map(function (k) { return { key: k, trades: m[k].n, pnl: Math.round(m[k].pnl * 100) / 100, winRate: m[k].n ? Math.round(m[k].wins / m[k].n * 1000) / 10 : 0 }; });
+}
+function activeTrades() { return store.trades.filter(function (t) { return t.accountId === store.activeAccount; }).sort(function (a, b) { return String(b.date || '') + (b.time || '') < String(a.date || '') + (a.time || '') ? -1 : 1; }); }
+function activeMissed() { return store.missed.filter(function (t) { return t.accountId === store.activeAccount; }).sort(function (a, b) { return String(b.date || '') < String(a.date || '') ? -1 : 1; }); }
+function activeAccount() { var a = store.accounts.filter(function (x) { return x.id === store.activeAccount; })[0]; return a || store.accounts[0]; }
+
+/* ---------- navigation ---------- */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+  var pg = $('page-' + name); if (pg) pg.classList.add('active');
+  document.querySelectorAll('#bottomNav button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-page') === name); });
+  if (name === 'trades') renderTrades();
+  if (name === 'dash') renderDash();
+  if (name === 'missed') renderMissed();
+  if (name === 'more') renderMore();
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll('#bottomNav button').forEach(function (b) {
+  b.addEventListener('click', function () { showPage(b.getAttribute('data-page')); });
+});
+
+/* ---------- accounts ---------- */
+function renderAccounts() {
+  var sel = $('accountSelect'); sel.innerHTML = '';
+  store.accounts.forEach(function (a) { var o = document.createElement('option'); o.value = a.id; o.textContent = a.name + ' — $' + (a.balance || 0); sel.appendChild(o); });
+  sel.value = store.activeAccount;
+}
+$('accountSelect').addEventListener('change', function () { store.activeAccount = this.value; save(); renderDash(); renderTrades(); });
+$('addAccountBtn').addEventListener('click', function () {
+  var name = prompt('Account name (e.g. GFT $10K GOAT):', ''); if (!name) return;
+  var bal = prompt('Starting balance in $:', '5000'); var b = parseFloat(bal); if (!isFinite(b)) b = 5000;
+  var id = uid(); store.accounts.push({ id: id, name: name, balance: b, firm: '' }); store.activeAccount = id; save(); renderAccounts(); renderDash(); toast('Account added.');
+});
+
+/* ---------- Quick Add ---------- */
+var dirVal = 'BUY';
+document.querySelectorAll('#dirSeg button').forEach(function (b) {
+  b.addEventListener('click', function () { dirVal = b.getAttribute('data-v'); document.querySelectorAll('#dirSeg button').forEach(function (x) { x.classList.toggle('on', x === b); }); previewCalc(); });
+});
+function todayStr() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function sessionForTime(timeStr) {
+  if (!timeStr) return 'Other'; var h = parseInt(String(timeStr).slice(0, 2), 10); if (isNaN(h)) return 'Other';
+  if (h >= 5 && h < 8) return 'Asia'; if (h >= 11 && h < 14) return 'London'; if (h >= 17 && h < 20) return 'New York';
+  if (h >= 8 && h < 11) return 'Asia'; if (h >= 14 && h < 17) return 'London'; return 'New York';
+}
+function previewCalc() {
+  var t = { dir: dirVal, entry: $('f_entry').value, sl: $('f_sl').value, tp: $('f_tp').value, exit: $('f_exit').value, lot: $('f_lot').value };
+  var c = calcTrade(t);
+  $('pvRisk').textContent = c.riskPips ? c.riskPips + ' pips' : '—';
+  $('pvRR').textContent = c.plannedRR != null ? '1 : ' + c.plannedRR : '—';
+  $('pvNow').textContent = (c.pips != null) ? ((c.pips >= 0 ? '+' : '') + c.pips + ' pips  •  ' + (c.r != null ? c.r + 'R' : '') + '  •  ' + money(c.pnl)) : 'Enter an exit price to see it.';
+}
+['f_entry','f_sl','f_tp','f_exit','f_lot'].forEach(function (id) { $(id).addEventListener('input', previewCalc); });
+$('f_time').addEventListener('change', function () { $('f_session').value = sessionForTime(this.value); });
+$('addForm').addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  var t = { id: editingId || uid(), accountId: store.activeAccount, date: $('f_date').value, time: $('f_time').value,
+    level: $('f_level').value, tf: $('f_tf').value, session: $('f_session').value, dir: dirVal,
+    entry: $('f_entry').value, sl: $('f_sl').value, tp: $('f_tp').value, exit: $('f_exit').value,
+    lot: $('f_lot').value, result: $('f_result').value, notes: $('f_notes').value };
+  if (!t.date || !t.entry) { toast('Date and entry price are needed.'); return; }
+  if (editingId) { var i = store.trades.findIndex(function (x) { return x.id === editingId; }); if (i >= 0) store.trades[i] = t; toast('Trade updated.'); }
+  else { store.trades.push(t); toast('Trade saved.'); }
+  editingId = null; $('cancelEdit').classList.add('hidden');
+  save(); ev.target.reset(); $('f_date').value = todayStr(); $('f_time').value = '12:00'; $('f_lot').value = '0.10'; $('f_result').value = ''; previewCalc();
+  showPage('trades');
+});
+$('cancelEdit').addEventListener('click', function () { editingId = null; this.classList.add('hidden'); $('addForm').reset(); $('f_date').value = todayStr(); $('f_lot').value = '0.10'; previewCalc(); });
+function startEdit(id) {
+  var t = store.trades.filter(function (x) { return x.id === id; })[0]; if (!t) return;
+  editingId = id; dirVal = t.dir || 'BUY';
+  document.querySelectorAll('#dirSeg button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-v') === dirVal); });
+  $('f_date').value = t.date || ''; $('f_time').value = t.time || ''; $('f_level').value = t.level || 'QML';
+  $('f_tf').value = t.tf || '15m'; $('f_session').value = t.session || 'Other'; $('f_entry').value = t.entry || '';
+  $('f_sl').value = t.sl || ''; $('f_tp').value = t.tp || ''; $('f_exit').value = t.exit || '';
+  $('f_lot').value = t.lot || '0.10'; $('f_result').value = t.result || ''; $('f_notes').value = t.notes || '';
+  $('cancelEdit').classList.remove('hidden'); previewCalc(); showPage('add'); window.scrollTo(0, 0);
+}
+
+/* ---------- Trades list ---------- */
+$('tradeSearch').addEventListener('input', renderTrades);
+document.querySelectorAll('#tradeFilters button').forEach(function (b) {
+  b.addEventListener('click', function () { tradeFilter = b.getAttribute('data-f'); document.querySelectorAll('#tradeFilters button').forEach(function (x) { x.classList.toggle('on', x === b); }); renderTrades(); });
+});
+function renderTrades() {
+  var q = ($('tradeSearch').value || '').toLowerCase();
+  var list = activeTrades().filter(function (t) {
+    if (tradeFilter === 'PLAYED' && t.result !== 'PLAYED') return false;
+    if (tradeFilter === 'FAILED' && t.result !== 'FAILED') return false;
+    if (tradeFilter === 'open' && t.result) return false;
+    if (q && ((t.level || '') + ' ' + (t.date || '') + ' ' + (t.notes || '') + ' ' + (t.session || '')).toLowerCase().indexOf(q) < 0) return false;
+    return true;
+  });
+  var el = $('tradeList');
+  if (!list.length) { el.innerHTML = '<div class="card muted">No trades here yet. Tap Add to log your first trade.</div>'; return; }
+  el.innerHTML = list.map(function (t) {
+    var c = calcTrade(t);
+    var res = t.result === 'PLAYED' ? '<span class="badge played">PLAYED</span>' : t.result === 'FAILED' ? '<span class="badge failed">FAILED</span>' : '<span class="badge open">OPEN</span>';
+    var pnlCls = c.pnl == null ? '' : (c.pnl > 0 ? 'green' : (c.pnl < 0 ? 'red' : ''));
+    return '<div class="trade" data-id="' + esc(t.id) + '">' +
+      '<div class="t1"><span class="nm">' + esc(t.level || '—') + ' ' + esc(t.tf || '') + '</span>' + res + '</div>' +
+      '<div class="t2">' + esc(t.date || '') + ' ' + esc(t.time || '') + ' &bull; ' + esc(t.session || '') + ' &bull; <span class="badge ' + (dirOf(t) === 1 ? 'buy' : 'sell') + '">' + esc(t.dir || 'BUY') + '</span></div>' +
+      '<div class="t3"><span>Entry ' + esc(t.entry || '—') + ' &nbsp; Exit ' + esc(t.exit || '—') + '</span><b class="' + pnlCls + '">' + (c.pips == null ? '' : ((c.pips >= 0 ? '+' : '') + c.pips + ' pips &nbsp;')) + money(c.pnl) + '</b></div>' +
+      '<div class="detail">' +
+      '<div class="row"><span class="k">Stop loss</span><span>' + esc(t.sl || '—') + '</span></div>' +
+      '<div class="row"><span class="k">Take profit</span><span>' + esc(t.tp || '—') + '</span></div>' +
+      '<div class="row"><span class="k">Lot</span><span>' + esc(t.lot || '—') + '</span></div>' +
+      '<div class="row"><span class="k">Risk</span><span>' + (c.riskPips ? c.riskPips + ' pips' : '—') + '</span></div>' +
+      '<div class="row"><span class="k">Result</span><span>' + (c.r != null ? c.r + 'R' : '—') + (c.plannedRR != null ? ' &nbsp;(planned 1:' + c.plannedRR + ')' : '') + '</span></div>' +
+      (t.notes ? '<div class="row"><span class="k">Notes</span><span style="text-align:right;max-width:70%">' + esc(t.notes) + '</span></div>' : '') +
+      '<div class="actions"><button type="button" data-act="edit">Edit</button><button type="button" data-act="missed">Mark as missed</button><button type="button" data-act="del">Delete</button></div>' +
+      '</div></div>';
+  }).join('');
+  el.querySelectorAll('.trade').forEach(function (card) {
+    card.addEventListener('click', function (ev) {
+      var actBtn = ev.target.closest('[data-act]');
+      if (actBtn) {
+        var id = card.getAttribute('data-id'), act = actBtn.getAttribute('data-act');
+        if (act === 'edit') startEdit(id);
+        if (act === 'del' && confirm('Delete this trade?')) { store.trades = store.trades.filter(function (x) { return x.id !== id; }); save(); renderTrades(); toast('Trade deleted.'); }
+        if (act === 'missed') {
+          var t = store.trades.filter(function (x) { return x.id === id; })[0]; if (!t) return;
+          store.trades = store.trades.filter(function (x) { return x.id !== id; });
+          store.missed.push({ id: uid(), accountId: t.accountId, date: t.date, dir: t.dir, level: t.level, tf: t.tf, entry: t.entry, sl: t.sl, tp: t.tp, reason: 'Other', outcome: t.result === 'PLAYED' ? 'played' : (t.result === 'FAILED' ? 'failed' : ''), notes: t.notes || '' });
+          save(); renderTrades(); toast('Moved to Missed — it no longer counts in your stats.');
+        }
+        return;
+      }
+      card.classList.toggle('open');
+    });
+  });
+}
+</script>
+<script>
+'use strict';
+/* ---------- Dashboard ---------- */
+function sliceTable(rows, emptyMsg) {
+  if (!rows.length) return '<div class="muted" style="padding:6px 2px">' + emptyMsg + '</div>';
+  return '<table><tr><th></th><th class="num">Trades</th><th class="num">P&amp;L</th><th class="num">Win rate</th></tr>' +
+    rows.map(function (r) { return '<tr><td>' + esc(r.key) + '</td><td class="num">' + r.trades + '</td><td class="num ' + (r.pnl > 0 ? 'green' : (r.pnl < 0 ? 'red' : '')) + '">' + money(r.pnl) + '</td><td class="num">' + r.winRate + '%</td></tr>'; }).join('') + '</table>';
+}
+function renderDash() {
+  var trades = activeTrades(), s = stats(trades), acct = activeAccount() || { balance: 5000, name: '' };
+  var bal = acct.balance || 5000, cur = bal + s.netPnl;
+  var phase1 = bal * GFT.phase1Pct, phase2 = bal * GFT.phase2Pct, dd = bal * GFT.dailyDdPct, maxLoss = bal * GFT.maxLossPct;
+  $('gftHero').innerHTML = '<div style="display:flex;justify-content:space-between;align-items:baseline"><div><div class="muted">Balance</div><div class="big">' + money(cur) + '</div><div class="muted small">' + esc(acct.name || '') + ' &bull; Goat Funded Trader $5K Two-Step GOAT</div></div><div style="text-align:right"><div class="muted">Net P&amp;L</div><div class="big ' + (s.netPnl >= 0 ? 'green' : 'red') + '">' + money(s.netPnl) + '</div></div></div>' +
+    '<div style="margin-top:10px">' +
+    '<div class="row"><span class="k">Phase 1 target (8%)</span><span class="v">' + money(phase1) + ' &nbsp;' + (s.netPnl >= phase1 ? '<span class="green">reached</span>' : '<span class="muted">' + money(phase1 - s.netPnl) + ' to go</span>') + '</span></div>' +
+    '<div class="row"><span class="k">Phase 2 target (6%)</span><span class="v">' + money(phase2) + '</span></div>' +
+    '<div class="row"><span class="k">Daily drawdown limit (4%)</span><span class="v">' + money(dd) + '</span></div>' +
+    '<div class="row"><span class="k">Max loss (10%)</span><span class="v">' + money(maxLoss) + '</span></div>' +
+    '<div class="row"><span class="k">Max drawdown so far</span><span class="v">' + money(s.maxDrawdown) + '</span></div>' +
+    '<div class="row"><span class="k">Trades</span><span class="v">' + s.count + ' &nbsp;(' + s.played + ' played / ' + s.failed + ' failed)</span></div></div>';
+  $('kpiGrid').innerHTML =
+    kpi('Win rate', s.winRate + '%') + kpi('Net R', (s.netR >= 0 ? '+' : '') + s.netR + 'R') +
+    kpi('Profit factor', fmt(s.profitFactor, 2)) + kpi('Expectancy', money(s.expectancy) + ' / trade');
+  function kpi(k, v) { return '<div class="kpi"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>'; }
+  $('sliceSession').innerHTML = sliceTable(sliceBy(trades, 'session'), 'No trades yet.');
+  $('sliceTf').innerHTML = sliceTable(sliceBy(trades, 'tf'), 'No trades yet.');
+  $('sliceLevel').innerHTML = sliceTable(sliceBy(trades, 'level'), 'No trades yet.');
+  var byDay = {};
+  trades.forEach(function (t) { var c = calcTrade(t); if (c.pnl == null) return; var d = t.date || '—'; byDay[d] = (byDay[d] || 0) + c.pnl; });
+  var days = Object.keys(byDay).sort().reverse().slice(0, 14);
+  $('sliceDays').innerHTML = days.length ? '<table>' + days.map(function (d) { return '<tr><td>' + esc(d) + '</td><td class="num ' + (byDay[d] > 0 ? 'green' : (byDay[d] < 0 ? 'red' : '')) + '">' + money(byDay[d]) + '</td></tr>'; }).join('') + '</table>' : '<div class="muted" style="padding:6px 2px">No closed trades yet.</div>';
+}
+
+/* ---------- Missed ---------- */
+function missedPips(m) {
+  var e = num(m.entry), tp = num(m.tp); if (e == null || tp == null) return null;
+  return Math.round(Math.abs(tp - e) * 10 * 10) / 10;
+}
+function renderMissed() {
+  var list = activeMissed();
+  var wouldPlay = list.filter(function (m) { return m.outcome === 'played'; }).length;
+  var pipsLeft = list.reduce(function (s, m) { var p = missedPips(m); return s + (p || 0); }, 0);
+  var reasons = {};
+  list.forEach(function (m) { reasons[m.reason || 'Other'] = (reasons[m.reason || 'Other'] || 0) + 1; });
+  var topReason = Object.keys(reasons).sort(function (a, b) { return reasons[b] - reasons[a]; })[0] || '—';
+  $('missedStats').innerHTML = '<div class="kpis">' +
+    '<div class="kpi"><div class="k">Missed trades</div><div class="v">' + list.length + '</div></div>' +
+    '<div class="kpi"><div class="k">Would have played</div><div class="v">' + wouldPlay + (list.length ? ' (' + Math.round(wouldPlay / list.length * 100) + '%)' : '') + '</div></div>' +
+    '<div class="kpi"><div class="k">Pips left on table</div><div class="v">' + pipsLeft + '</div></div>' +
+    '<div class="kpi"><div class="k">Most common reason</div><div class="v" style="font-size:18px">' + esc(topReason) + '</div></div></div>';
+  var el = $('missedList');
+  if (!list.length) { el.innerHTML = '<div class="card muted">Nothing missed yet — that is a good sign.</div>'; return; }
+  el.innerHTML = list.map(function (m) {
+    var p = missedPips(m);
+    return '<div class="trade" data-id="' + esc(m.id) + '"><div class="t1"><span class="nm">' + esc(m.level || '—') + ' ' + esc(m.tf || '') + '</span><span class="badge level">' + esc(m.reason || 'Other') + '</span></div>' +
+      '<div class="t2">' + esc(m.date || '') + ' &bull; <span class="badge ' + (String(m.dir).toUpperCase() === 'SELL' ? 'sell' : 'buy') + '">' + esc(m.dir || 'BUY') + '</span> &bull; Entry ' + esc(m.entry || '—') + (m.tp ? ' &rarr; TP ' + esc(m.tp) : '') + '</div>' +
+      '<div class="t3"><span>' + (m.outcome === 'played' ? '<span class="green">Would have played</span>' : m.outcome === 'failed' ? '<span class="red">Would have failed</span>' : '<span class="muted">Outcome not set</span>') + '</span><b>' + (p != null ? p + ' pips left' : '') + '</b></div>' +
+      (m.notes ? '<div class="muted small" style="margin-top:6px">' + esc(m.notes) + '</div>' : '') +
+      '<div class="actions"><button type="button" data-act="to-trades">Move to Trades</button><button type="button" data-act="del">Delete</button></div></div>';
+  }).join('');
+  el.querySelectorAll('.trade').forEach(function (card) {
+    card.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-act]'); if (!b) return;
+      var id = card.getAttribute('data-id');
+      if (b.getAttribute('data-act') === 'del' && confirm('Delete this missed trade?')) { store.missed = store.missed.filter(function (x) { return x.id !== id; }); save(); renderMissed(); toast('Missed trade deleted.'); }
+      if (b.getAttribute('data-act') === 'to-trades') {
+        var m = store.missed.filter(function (x) { return x.id === id; })[0]; if (!m) return;
+        store.missed = store.missed.filter(function (x) { return x.id !== id; });
+        store.trades.push({ id: uid(), accountId: m.accountId, date: m.date, time: '', level: m.level, tf: m.tf, session: 'Other', dir: m.dir, entry: m.entry, sl: m.sl, tp: m.tp, exit: '', lot: '0.10', result: '', notes: m.notes || '' });
+        save(); renderMissed(); toast('Moved to Trades — finish the exit and result there.');
+      }
+    });
+  });
+}
+$('missedForm').addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  store.missed.push({ id: uid(), accountId: store.activeAccount, date: $('m_date').value, dir: $('m_dir').value,
+    level: $('m_level').value, tf: $('m_tf').value, entry: $('m_entry').value, sl: $('m_sl').value, tp: $('m_tp').value,
+    reason: $('m_reason').value, outcome: $('m_outcome').value, notes: $('m_notes').value });
+  save(); ev.target.reset(); $('m_date').value = todayStr(); renderMissed(); toast('Missed trade saved.');
+});
+
+/* ---------- Import / export ---------- */
+function downloadFile(name, text, type) {
+  var blob = new Blob([text], { type: type || 'text/plain' });
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+function csvCell(v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+$('exportCsv').addEventListener('click', function () {
+  var rows = [['date','time','level','direction','timeframe','session','entry','sl','tp','exit','lot','result','pips','r','pnl_usd','notes']];
+  activeTrades().forEach(function (t) { var c = calcTrade(t); rows.push([t.date, t.time, t.level, t.dir, t.tf, t.session, t.entry, t.sl, t.tp, t.exit, t.lot, t.result || '', c.pips == null ? '' : c.pips, c.r == null ? '' : c.r, c.pnl == null ? '' : c.pnl, t.notes || ''].map(csvCell)); });
+  downloadFile('trade-journal-export.csv', rows.map(function (r) { return r.join(','); }).join('\n'), 'text/csv');
+  toast('CSV downloaded.');
+});
+$('exportJson').addEventListener('click', function () { downloadFile('trade-journal-backup.json', JSON.stringify(store, null, 2), 'application/json'); toast('Backup downloaded — keep it safe.'); });
+$('importJsonBtn').addEventListener('click', function () { $('jsonFile').click(); });
+$('jsonFile').addEventListener('change', function () {
+  var f = this.files[0]; if (!f) return;
+  var rd = new FileReader();
+  rd.onload = function () {
+    try { var s = JSON.parse(rd.result); if (!s || !Array.isArray(s.trades) || !Array.isArray(s.accounts)) throw new Error('bad file');
+      if (!confirm('Restore this backup? It replaces everything on this phone.')) return;
+      store = s; save(); renderAccounts(); renderTrades(); renderDash(); renderMissed(); toast('Backup restored.');
+    } catch (e) { toast('That file is not a Trade Journal backup.'); }
+  };
+  rd.readAsText(f); this.value = '';
+});
+function parseCsvText(text) {
+  var lines = text.split(/\r?\n/).filter(function (l) { return l.trim().length; });
+  if (lines.length < 2) return [];
+  function splitLine(l) { var out = [], cur = '', q = false; for (var i = 0; i < l.length; i++) { var ch = l[i]; if (ch === '"') { if (q && l[i + 1] === '"') { cur += '"'; i++; } else q = !q; } else if (ch === ',' && !q) { out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out.map(function (s) { return s.trim(); }); }
+  var head = splitLine(lines[0]).map(function (h) { return h.toLowerCase(); });
+  function col() { for (var i = 0; i < arguments.length; i++) { var ix = head.indexOf(arguments[i]); if (ix >= 0) return ix; } return -1; }
+  var cDate = col('date', 'open time', 'time'), cType = col('type', 'direction', 'side'), cOpen = col('open', 'open price', 'entry', 'price'),
+    cSl = col('sl', 'stop loss', 's/l'), cTp = col('tp', 'take profit', 't/p'), cClose = col('close', 'close price', 'exit'),
+    cProfit = col('profit', 'pnl', 'p&l'), cLot = col('volume', 'lot', 'lots'), cSym = col('symbol');
+  var rows = [];
+  for (var r = 1; r < lines.length; r++) {
+    var c = splitLine(lines[r]); if (!c.length) continue;
+    var sym = cSym >= 0 ? (c[cSym] || '') : '';
+    if (sym && sym.toUpperCase().indexOf('XAU') < 0 && sym.toUpperCase().indexOf('GOLD') < 0) continue;
+    var type = cType >= 0 ? (c[cType] || '') : '';
+    var dir = /sell/i.test(type) ? 'SELL' : 'BUY';
+    var dateRaw = cDate >= 0 ? (c[cDate] || '') : '';
+    var date = '', time = '';
+    var dm = dateRaw.match(/(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
+    if (dm) date = dm[1] + '-' + dm[2].padStart(2, '0') + '-' + dm[3].padStart(2, '0');
+    var tm = dateRaw.match(/(\d{1,2}):(\d{2})/); if (tm) time = tm[1].padStart(2, '0') + ':' + tm[2];
+    var profit = cProfit >= 0 ? parseFloat(c[cProfit]) : NaN;
+    rows.push({ date: date || todayStr(), time: time, dir: dir, level: 'Other', tf: '15m', session: sessionForTime(time),
+      entry: cOpen >= 0 ? c[cOpen] : '', sl: cSl >= 0 ? c[cSl] : '', tp: cTp >= 0 ? c[cTp] : '',
+      exit: cClose >= 0 ? c[cClose] : '', lot: cLot >= 0 ? c[cLot] : '0.10', pnl: isFinite(profit) ? String(profit) : '' });
+  }
+  return rows;
+}
+$('csvFile').addEventListener('change', function () {
+  var f = this.files[0]; if (!f) return;
+  var rd = new FileReader();
+  rd.onload = function () {
+    var rows = parseCsvText(String(rd.result || ''));
+    var pv = $('csvPreview');
+    if (!rows.length) { pv.innerHTML = '<div class="note-box">No XAUUSD trades found in that file. Check it is an MT5 history CSV.</div>'; return; }
+    window._csvRows = rows;
+    pv.innerHTML = '<div class="note-box">Found <b>' + rows.length + '</b> trade(s). Tap Confirm to save them into <b>' + esc((activeAccount() || {}).name || '') + '</b>.</div>' +
+      '<button class="btn small" type="button" id="csvConfirm">Confirm import (' + rows.length + ')</button>';
+    $('csvConfirm').addEventListener('click', function () {
+      (window._csvRows || []).forEach(function (r) { store.trades.push({ id: uid(), accountId: store.activeAccount, date: r.date, time: r.time, level: r.level, tf: r.tf, session: r.session, dir: r.dir, entry: r.entry, sl: r.sl, tp: r.tp, exit: r.exit, lot: r.lot, result: '', notes: '', pnl: r.pnl }); });
+      save(); $('csvPreview').innerHTML = ''; $('csvFile').value = ''; renderTrades(); toast(rows.length + ' trade(s) imported. Check them in Trades.');
+      showPage('trades');
+    });
+  };
+  rd.readAsText(f);
+});
+$('wipeBtn').addEventListener('click', function () {
+  if (!confirm('Delete EVERYTHING on this phone — all trades, missed trades and accounts? This cannot be undone.')) return;
+  localStorage.removeItem(LS_KEY); store = seed(); save(); renderAccounts(); renderTrades(); renderDash(); renderMissed(); renderMore(); toast('All data deleted.');
+});
+function renderMore() {
+  $('dataInfo').textContent = store.trades.length + ' trade(s), ' + store.missed.length + ' missed trade(s), ' + store.accounts.length + ' account(s) — stored only on this phone.';
+}
+
+/* ---------- Live price ---------- */
+function fetchLivePrice() {
+  $('livePrice').textContent = '…'; $('liveBoxPrice').textContent = '…';
+  fetch('https://api.gold-api.com/price/XAU', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+    var p = j && (j.price != null ? j.price : null);
+    if (p == null) throw new Error('no price');
+    livePrice = p; showPrice();
+  }).catch(function () {
+    $('livePrice').textContent = '—'; $('livePriceSrc').textContent = 'Price unavailable — type it in';
+    $('liveBoxPrice').textContent = '—';
+  });
+}
+function showPrice() {
+  if (livePrice == null) return;
+  $('livePrice').textContent = '$' + Number(livePrice).toFixed(2);
+  $('livePriceSrc').textContent = 'Live gold price';
+  $('liveBoxPrice').textContent = '$' + Number(livePrice).toFixed(2);
+}
+$('refreshPrice').addEventListener('click', fetchLivePrice);
+$('refreshLive2').addEventListener('click', fetchLivePrice);
+$('useLive').addEventListener('click', function () { if (livePrice == null) { toast('Live price is not loaded yet — tap Refresh first.'); return; } $('f_entry').value = Math.round(livePrice * 100) / 100; previewCalc(); });
+$('round100').addEventListener('click', function () { var v = num($('f_entry').value); if (v == null) { toast('Enter a price first.'); return; } $('f_entry').value = Math.floor(v / 100) * 100; previewCalc(); });
+
+/* ---------- Voice note (phone dictation) ---------- */
+$('voiceBtn').addEventListener('click', function () {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('This phone browser has no dictation. Type the note instead — it saves the same way.'); return; }
+  var rec = new SR(); rec.lang = 'en-US'; rec.interimResults = false; rec.maxAlternatives = 1;
+  $('voiceBtn').textContent = 'Listening... tap again to stop';
+  rec.onresult = function (ev) { var txt = ev.results[0][0].transcript; $('f_notes').value = ($('f_notes').value ? $('f_notes').value + ' ' : '') + txt; };
+  rec.onerror = function () { $('voiceBtn').textContent = '🎙 Speak note (phone dictation)'; toast('Could not hear clearly — try again or type it.'); };
+  rec.onend = function () { $('voiceBtn').textContent = '🎙 Speak note (phone dictation)'; };
+  try { rec.start(); } catch (e) { toast('Dictation could not start on this phone.'); }
+});
+
+/* ---------- init ---------- */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.protocol === 'http:')) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+$('f_date').value = todayStr(); $('m_date').value = todayStr();
+renderAccounts(); previewCalc(); renderTrades(); renderDash(); renderMissed(); renderMore();
+fetchLivePrice();
+</script>
+</body>
+</html>
